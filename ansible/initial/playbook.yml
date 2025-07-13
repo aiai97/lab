@@ -1,0 +1,21 @@
+- name: Check Git and Python Version
+  hosts: mac
+  gather_facts: no
+  tasks:
+    - name: Check if Git is installed
+      command: git --version
+      register: git_result
+      ignore_errors: yes
+
+    - name: Print Git version
+      debug:
+        var: git_result.stdout
+
+    - name: Check if Python is installed
+      command: python3 --version
+      register: python_result
+      ignore_errors: yes
+
+    - name: Print Python version
+      debug:
+        var: python_result.stdout

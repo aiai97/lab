@@ -1,0 +1,7 @@
+software_list:
+  - name: node
+    command: node -v
+  - name: docker
+    command: docker --version
+  - name: nginx
+    command: nginx -v

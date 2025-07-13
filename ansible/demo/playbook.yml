@@ -1,0 +1,27 @@
+- name: Local Software Health Check
+  hosts: mac
+  gather_facts: no
+
+  tasks:
+    - name: Check software list
+      block:
+        - name: Run command for {{ item.name }}
+          command: "{{ item.command }}"
+          register: result
+          ignore_errors: yes
+          loop: "{{ software_list }}"
+          loop_control:
+            label: "{{ item.name }}"
+          when: item.command is defined
+          changed_when: false  # 不让它标记为 changed
+
+        - name: Print software check result
+          debug:
+            msg: >-
+              {{ item.item.name }}:
+              {% if item.rc == 0 %}
+              ✅ Installed — {{ item.stdout | default('') }}
+              {% else %}
+              ❌ Not Installed
+              {% endif %}
+          loop: "{{ result.results }}"
